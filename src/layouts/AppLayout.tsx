@@ -6,7 +6,7 @@ import {App as AppAnt} from 'antd';
 export const AppLayout: React.FC = () => {
     const layoutStyle: React.CSSProperties = {
         // height: '100vh'
-        minHeight: '100vh'
+        // minHeight: '100vh'
     }
     return (
         <>
