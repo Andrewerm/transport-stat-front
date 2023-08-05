@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {IUserProfile} from "../types";
 
 interface IProfileDataProps {
@@ -6,21 +6,33 @@ interface IProfileDataProps {
 }
 
 interface IProfileDataContext {
-    user_data?: IUserProfile,
-    setDataUser: any
+    getUserData: () => IUserProfile,
+    setDataUser: (userData: IUserProfile) => void,
+    clearDataUser: () => void
 }
 
-const initialUserProfileDataContext:IProfileDataContext={
-    user_data: undefined,
-    setDataUser: undefined
+
+const keyLocalStorageProfile = 'transport_statistic_key';
+
+const initialUserProfileDataContext: IProfileDataContext = {
+    getUserData: () => {
+        const localData = localStorage.getItem(keyLocalStorageProfile)
+        if (localData) return JSON.parse(localData)
+    },
+    setDataUser: (userData: IUserProfile) => {
+        localStorage.setItem(keyLocalStorageProfile, JSON.stringify(userData))
+    },
+    clearDataUser: () => {
+        localStorage.removeItem(keyLocalStorageProfile);
+    }
 }
 
-export const ProfileDataContext=React.createContext<IProfileDataContext>(initialUserProfileDataContext)
 
-export const ProfileData:React.FC<IProfileDataProps>=({children})=>{
-    const [user_data, setDataUser] = useState<IUserProfile|undefined>(initialUserProfileDataContext.user_data);
+export const ProfileDataContext = React.createContext<IProfileDataContext>(initialUserProfileDataContext)
+
+export const ProfileData: React.FC<IProfileDataProps> = ({children}) => {
     return (
-        <ProfileDataContext.Provider value={{user_data, setDataUser}}>
+        <ProfileDataContext.Provider value={initialUserProfileDataContext}>
             {children}
         </ProfileDataContext.Provider>
     )

@@ -3,30 +3,37 @@ import {Link, useNavigate} from "react-router-dom";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
 import axios, {AxiosError} from "axios";
 import React, {useContext, useEffect, useRef} from "react";
-import {IErrorFromServer, IUserProfile} from "../types";
+import {IGetUserData, IResponseFromServer, IUserProfile} from "../types";
+import {loginParams} from "../configs/testLogin";
+import {ProfileDataContext} from "../hooks/ProfileData";
 
 const {Title} = Typography;
 
-export interface IGetLogin {
-    user_data: IUserProfile
-}
 
 export const LoginPage: React.FC = () => {
     const inputRef = useRef<InputRef>(null);
     const [form] = Form.useForm();
-    if (process.env.NODE_ENV==='development') form.setFieldsValue({ email: 'a.m.vinokurov@gmail.com', password: '123456789' });
+    if (process.env.NODE_ENV === 'development') form.setFieldsValue(loginParams);
     const navigate = useNavigate()
     const {notification} = App.useApp();
+    const {setDataUser} = useContext(ProfileDataContext);
     useEffect(() => {
         if (inputRef.current) inputRef.current.focus()
     }, [])
     const onFinish = () => {
-        axios.post<IGetLogin>(AjaxRoutes.LOGIN, form.getFieldsValue(),  { withCredentials: true })
-            .then(response => {
-                navigate(AjaxRoutes.HOME, {replace: true})
+        axios.post<IResponseFromServer<IGetUserData>>(AjaxRoutes.LOGIN, form.getFieldsValue(), {withCredentials: true})
+            .then((response) => {
+                notification.success({message: response.data.message})
+                if (response.data.data?.user_data) {
+                    setDataUser(response.data.data.user_data)
+                    navigate(AjaxRoutes.HOME, {replace: true})
+                } else {
+                    navigate(AjaxRoutes.ROUTE_LOGIN, {replace: true})
+                    notification.error({message: 'Некорректный формат профиля пользователя'})
+                }
             })
-            .catch((err: AxiosError<IErrorFromServer>) => {
-                notification.error({ message:err.response?.data.message||err.message})
+            .catch((err: AxiosError<IResponseFromServer<null>>) => {
+                notification.error({message: err.response?.data.message || err.message})
             })
     };
 
@@ -73,9 +80,9 @@ export const LoginPage: React.FC = () => {
                         Войти
                     </Button>
                 </Form.Item>
-                <Form.Item>
-                    <Link to={AjaxRoutes.ROUTE_REMIND_PASSWORD}>Забыли пароль?</Link><p/>
-                </Form.Item>
+                {/*<Form.Item>*/}
+                {/*    <Link to={AjaxRoutes.ROUTE_REMIND_PASSWORD}>Забыли пароль?</Link><p/>*/}
+                {/*</Form.Item>*/}
             </Form>
         </>
     )

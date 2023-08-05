@@ -5,7 +5,6 @@ export enum AjaxRoutes {
     ROUTE_REMIND_PASSWORD='/sign/remind',
     POST_REMIND_PASSWORD='/auth/remind_password',
     HOME='/',
-    GET_SURVEYS='/guides/surveys',
-    GET_REPORT='/guides/surveys',
-
+    GET_VEHICLES='/stat/vehicles',
+    GET_DOORS='/stat/doors'
 }

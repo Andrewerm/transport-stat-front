@@ -1,20 +1,28 @@
-import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import React, {useContext, useEffect} from 'react';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import {AppLayout} from './layouts/AppLayout';
 import {MainLayout} from './layouts/MainLayout';
 import {StatisticPage} from "./pages/StatisticPage";
 import {AuthLayout} from "./layouts/AuthLayout";
 import {LoginPage} from "./pages/LoginPage";
 import {NotFoundPage} from "./pages/NotFoundPage";
+import {AjaxRoutes} from "./configs/ajaxRoutes";
+import {ProfileDataContext} from "./hooks/ProfileData";
 
 function App() {
+    const navigate = useNavigate()
+    const {getUserData} = useContext(ProfileDataContext);
+    useEffect(() => {
+        if (getUserData()) navigate(AjaxRoutes.HOME)
+        else navigate(AjaxRoutes.ROUTE_LOGIN)
+    }, []);
     return (
         <>
             <Routes>
                 <Route path="/" element={<AppLayout/>}>
-                    <Route path="" element={<MainLayout/>}>
+                    {getUserData() && <Route path="" element={<MainLayout/>}>
                         <Route index element={<StatisticPage/>}/>
-                    </Route>
+                    </Route>}
                     <Route path="sign" element={<AuthLayout/>}>
                         <Route path="login" element={<LoginPage/>}/>
                     </Route>

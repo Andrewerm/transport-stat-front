@@ -10,11 +10,14 @@ import {antCustoms} from "./configs/antCustoms";
 import 'dayjs/locale/ru'
 import ruRU from 'antd/es/locale/ru_RU';
 import dayjs from 'dayjs';
+import './configs/mock';
+
 
 dayjs.locale('ru');
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
 root.render(
     <ProfileData>
         <ConfigProvider theme={antCustoms} locale={ruRU}>
