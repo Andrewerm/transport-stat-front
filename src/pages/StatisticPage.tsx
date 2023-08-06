@@ -2,10 +2,17 @@ import {App, Button, Card, DatePicker, Select, Space, Table, Typography} from "a
 import {ColumnsType} from "antd/es/table";
 import React, {FC, useContext, useEffect, useState} from "react";
 import {ProfileDataContext} from "../hooks/ProfileData";
-import {IDoor, IDoorsList, IGetDoorsParams, IResponseFromServer, IVehicle, IVehiclesList} from "../types";
+import {
+    IDoor,
+    IDoorsList,
+    IGetDoorsParams,
+    IResponseFromServer,
+    ISelectorData,
+    IVehicle,
+    IVehiclesList
+} from "../types";
 import axios, {AxiosError} from "axios";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
-import {DefaultOptionType} from "antd/es/select";
 import {Dayjs} from "dayjs";
 
 const {RangePicker} = DatePicker;
@@ -30,7 +37,7 @@ export const StatisticPage: FC = () => {
     const [loadingDoors, setLoadingDoors] = useState(false);
     const {notification} = App.useApp();
     const {getUserData} = useContext(ProfileDataContext);
-    const [vehicles, setVehicles] = useState<DefaultOptionType[]>([]);
+    const [vehicles, setVehicles] = useState<ISelectorData[]>([]);
     const getVehicleById = (id: number) => vehicles.find(item => item.value === id)?.label
     const formIsNotFilled = () => !selectedVehicleId || !selectedStartRange || !selectedEndRange
     useEffect(() => {
@@ -107,6 +114,10 @@ export const StatisticPage: FC = () => {
                         onChange={handleSelectChange}
                         options={vehicles}
                         loading={loadingVehicles}
+                        filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
+                        filterSort={(optionA, optionB) =>
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
                     />
                     <RangePicker onChange={rangePickerChange}/>
                     <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить

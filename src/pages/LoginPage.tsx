@@ -1,9 +1,9 @@
-import {Typography, Button, Form, Input, InputRef, App} from 'antd';
-import {Link, useNavigate} from "react-router-dom";
+import {App, Button, Form, Input, InputRef, Typography} from 'antd';
+import {useNavigate} from "react-router-dom";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
 import axios, {AxiosError} from "axios";
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {IGetUserData, IResponseFromServer, IUserProfile} from "../types";
+import {IGetUserData, IResponseFromServer} from "../types";
 import {loginParams} from "../configs/testLogin";
 import {ProfileDataContext} from "../hooks/ProfileData";
 
@@ -14,7 +14,8 @@ export const LoginPage: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<InputRef>(null);
     const [form] = Form.useForm();
-    if (process.env.NODE_ENV === 'development') form.setFieldsValue(loginParams);
+    // if (process.env.NODE_ENV === 'development')
+    form.setFieldsValue(loginParams);
     const navigate = useNavigate()
     const {notification} = App.useApp();
     const {setDataUser} = useContext(ProfileDataContext);
@@ -37,7 +38,7 @@ export const LoginPage: React.FC = () => {
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
             })
-            .finally(()=>{
+            .finally(() => {
                 setLoading(false)
             })
     };
@@ -60,7 +61,7 @@ export const LoginPage: React.FC = () => {
                 <Form.Item
                     label="Email"
                     name="email"
-                    rules={[{required: true, message: 'Пожалуйста введите email!'}]}
+                    rules={[{required: true, type: 'email', message: 'Пожалуйста введите email!'}]}
                 >
                     <Input
                         placeholder="Введите Email или телефон"

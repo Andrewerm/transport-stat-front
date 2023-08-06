@@ -14,12 +14,12 @@ const LogOut: IResponseFromServer<null> = {error: 200, message: 'Выход из
 
 const vehicles: IVehiclesList = {
     vehicles: [
-        {id: 1, gos_number: 'А111MA116RUS'},
-        {id: 2, gos_number: 'А222MA116RUS'},
-        {id: 3, gos_number: 'А333MA116RUS'},
-        {id: 4, gos_number: 'А443MA116RUS'},
-        {id: 5, gos_number: 'А989MA116RUS'},
-        {id: 6, gos_number: 'А001MA116RUS'},
+        {id: 1, gos_number: 'A111BA116RUS'},
+        {id: 3, gos_number: 'A333AA116RUS'},
+        {id: 4, gos_number: 'A443MM116RUS'},
+        {id: 5, gos_number: 'A989MA116RUS'},
+        {id: 6, gos_number: 'A001MA116RUS'},
+        {id: 2, gos_number: 'A222AB116RUS'},
     ]
 }
 

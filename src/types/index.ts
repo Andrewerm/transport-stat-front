@@ -1,4 +1,5 @@
 import {Dayjs} from "dayjs";
+import {DefaultOptionType} from "antd/es/select";
 
 export interface IVehicle {
     id: number,
@@ -33,6 +34,10 @@ export interface IGetDoorsParams {
     vehicle_id: number,
     startRange: Dayjs,
     endRange: Dayjs
+}
+
+export interface ISelectorData extends DefaultOptionType{
+    label: string
 }
 
 export interface IResponseFromServer<T> {
