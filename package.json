@@ -25,8 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-     "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "axios-mock-adapter": "^1.21.5"
+    "axios-mock-adapter": "^1.21.5",
+    "gh-pages": "^5.0.0"
   }
 }
