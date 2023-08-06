@@ -34,7 +34,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://andrewerm.github.io/transport_statistic_front",
+  "homepage": "https://github.com/Andrewerm/transport-stat-front",
   "browserslist": {
     "production": [
       ">0.2%",
