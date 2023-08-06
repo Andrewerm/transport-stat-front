@@ -2,7 +2,7 @@ import {Typography, Button, Form, Input, InputRef, App} from 'antd';
 import {Link, useNavigate} from "react-router-dom";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
 import axios, {AxiosError} from "axios";
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {IGetUserData, IResponseFromServer, IUserProfile} from "../types";
 import {loginParams} from "../configs/testLogin";
 import {ProfileDataContext} from "../hooks/ProfileData";
@@ -11,6 +11,7 @@ const {Title} = Typography;
 
 
 export const LoginPage: React.FC = () => {
+    const [loading, setLoading] = useState(false);
     const inputRef = useRef<InputRef>(null);
     const [form] = Form.useForm();
     if (process.env.NODE_ENV === 'development') form.setFieldsValue(loginParams);
@@ -21,6 +22,7 @@ export const LoginPage: React.FC = () => {
         if (inputRef.current) inputRef.current.focus()
     }, [])
     const onFinish = () => {
+        setLoading(true)
         axios.post<IResponseFromServer<IGetUserData>>(AjaxRoutes.LOGIN, form.getFieldsValue(), {withCredentials: true})
             .then((response) => {
                 notification.success({message: response.data.message})
@@ -34,6 +36,9 @@ export const LoginPage: React.FC = () => {
             })
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
+            })
+            .finally(()=>{
+                setLoading(false)
             })
     };
 
@@ -76,7 +81,7 @@ export const LoginPage: React.FC = () => {
                 {/*</Form.Item>*/}
 
                 <Form.Item>
-                    <Button type="primary" block htmlType="submit">
+                    <Button loading={loading} type="primary" block htmlType="submit">
                         Войти
                     </Button>
                 </Form.Item>

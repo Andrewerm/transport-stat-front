@@ -1,3 +1,5 @@
+import {Dayjs} from "dayjs";
+
 export interface IVehicle {
     id: number,
     gos_number: string
@@ -27,6 +29,11 @@ export interface IGetUserData {
     user_data: IUserProfile
 }
 
+export interface IGetDoorsParams {
+    vehicle_id: number,
+    startRange: Dayjs,
+    endRange: Dayjs
+}
 
 export interface IResponseFromServer<T> {
     error: number,

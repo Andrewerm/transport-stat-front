@@ -10,7 +10,7 @@ const LoginSuccessful: IResponseFromServer<IGetUserData> = {
     data: {user_data: {company_name: 'ООО Ромашка', email: 'adads@dsdfs.ru'}}
 }
 const LoginFail: IResponseFromServer<null> = {error: 401, message: 'Аутентификация не успешна'}
-const LogOut: IResponseFromServer<null> = {error: 204, message: 'Выход из сессии успешен'}
+const LogOut: IResponseFromServer<null> = {error: 200, message: 'Выход из сессии успешен'}
 
 const vehicles: IVehiclesList = {
     vehicles: [

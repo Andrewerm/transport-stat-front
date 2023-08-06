@@ -1,21 +1,22 @@
-import {App, Button, Card, DatePicker, Select, Space, Table} from "antd";
+import {App, Button, Card, DatePicker, Select, Space, Table, Typography} from "antd";
 import {ColumnsType} from "antd/es/table";
 import React, {FC, useContext, useEffect, useState} from "react";
 import {ProfileDataContext} from "../hooks/ProfileData";
-import {IDoor, IDoorsList, IResponseFromServer, IVehicle, IVehiclesList} from "../types";
+import {IDoor, IDoorsList, IGetDoorsParams, IResponseFromServer, IVehicle, IVehiclesList} from "../types";
 import axios, {AxiosError} from "axios";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
 import {DefaultOptionType} from "antd/es/select";
 import {Dayjs} from "dayjs";
 
 const {RangePicker} = DatePicker;
+const {Title} = Typography
 type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
 export const StatisticPage: FC = () => {
     const [selectedVehicleId, setSelectedVehicleId] = useState<number>();
     const [selectedStartRange, setSelectedStartRange] = useState<Dayjs>();
     const [selectedEndRange, setSelectedEndRange] = useState<Dayjs>();
-    const [loadedVehicleData, setLoadedVehicleData] = useState<DefaultOptionType>();
+    const [loadedVehicleData, setLoadedVehicleData] = useState<IGetDoorsParams>();
     const [dataTable, setDataTable] = useState<StatisticDataTableType[]>([]);
     const handleSelectChange = (value: number) => {
         setSelectedVehicleId(value)
@@ -30,7 +31,7 @@ export const StatisticPage: FC = () => {
     const {notification} = App.useApp();
     const {getUserData} = useContext(ProfileDataContext);
     const [vehicles, setVehicles] = useState<DefaultOptionType[]>([]);
-    const getVehicleById = () => vehicles.find(item => item.id === selectedVehicleId)
+    const getVehicleById = (id: number) => vehicles.find(item => item.value === id)?.label
     const formIsNotFilled = () => !selectedVehicleId || !selectedStartRange || !selectedEndRange
     useEffect(() => {
         axios.get<IResponseFromServer<IVehiclesList>>(AjaxRoutes.GET_VEHICLES)
@@ -49,25 +50,30 @@ export const StatisticPage: FC = () => {
     }, []);
 
     const getDoors = () => {
-        setLoadingDoors(true)
-        axios.get<IResponseFromServer<IDoorsList>>(AjaxRoutes.GET_DOORS, {
-            withCredentials: true,
-            params: {vehicle_id: selectedVehicleId, startRange: selectedStartRange, endRange: selectedEndRange}
-        })
-            .then(response => {
-                console.log('response', response);
-                if (response.data.data) {
-                    setDataTable(response.data.data.doors.map((item: IDoor) => ({key: item.number, ...item})))
-                    const vehicle = vehicles.find(item => item.id === selectedVehicleId)
-                    if (vehicle) setLoadedVehicleData(vehicle)
-                }
+        if (selectedVehicleId && selectedStartRange && selectedEndRange) {
+            setLoadingDoors(true)
+            const params: IGetDoorsParams = {
+                vehicle_id: selectedVehicleId,
+                startRange: selectedStartRange,
+                endRange: selectedEndRange
+            }
+            axios.get<IResponseFromServer<IDoorsList>>(AjaxRoutes.GET_DOORS, {
+                withCredentials: true,
+                params
             })
-            .catch((err: AxiosError<IResponseFromServer<null>>) => {
-                notification.error({message: err.response?.data.message || err.message})
-            })
-            .finally(() => {
-                setLoadingDoors(false)
-            })
+                .then(response => {
+                    if (response.data.data) {
+                        setDataTable(response.data.data.doors.map((item: IDoor) => ({key: item.number, ...item})))
+                        setLoadedVehicleData(params)
+                    }
+                })
+                .catch((err: AxiosError<IResponseFromServer<null>>) => {
+                    notification.error({message: err.response?.data.message || err.message})
+                })
+                .finally(() => {
+                    setLoadingDoors(false)
+                })
+        }
     }
 
     interface StatisticDataTableType extends IDoor {
@@ -88,6 +94,8 @@ export const StatisticPage: FC = () => {
             dataIndex: 'cameOut',
         },
     ];
+    const statisticTitle = loadedVehicleData &&
+        `Статистика по: ${getVehicleById(loadedVehicleData.vehicle_id)}, период с ${loadedVehicleData.startRange.format("DD-MM-YYYY")} по ${loadedVehicleData.endRange.format("DD-MM-YYYY")}`
     return <>
         <Card title={getUserData().company_name}>
             <Space direction={'vertical'} size={'large'}>
@@ -104,7 +112,8 @@ export const StatisticPage: FC = () => {
                     <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить
                         данные</Button>
                 </Space>
-                <Table columns={columns} dataSource={dataTable} pagination={{position: []}}/>
+                {loadedVehicleData && <Title level={5}>{statisticTitle}</Title>}
+                <Table loading={loadingDoors} columns={columns} dataSource={dataTable} pagination={{position: []}}/>
             </Space>
         </Card>
     </>
