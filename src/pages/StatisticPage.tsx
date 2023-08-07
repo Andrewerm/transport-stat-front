@@ -1,4 +1,4 @@
-import {App, Button, Card, DatePicker, Select, Space, Table, Typography} from "antd";
+import {App, Button, Card, Col, DatePicker, Row, Select, Space, Table, Typography} from "antd";
 import {ColumnsType} from "antd/es/table";
 import React, {FC, useContext, useEffect, useState} from "react";
 import {ProfileDataContext} from "../hooks/ProfileData";
@@ -14,6 +14,7 @@ import {
 import axios, {AxiosError} from "axios";
 import {AjaxRoutes} from "../configs/ajaxRoutes";
 import {Dayjs} from "dayjs";
+import {useNavigate} from "react-router-dom";
 
 const {RangePicker} = DatePicker;
 const {Title} = Typography
@@ -33,6 +34,7 @@ export const StatisticPage: FC = () => {
         if (value && value[1]) setSelectedEndRange(value[1])
 
     }
+    const navigate=useNavigate();
     const [loadingVehicles, setLoadingVehicles] = useState(true);
     const [loadingDoors, setLoadingDoors] = useState(false);
     const {notification} = App.useApp();
@@ -50,6 +52,7 @@ export const StatisticPage: FC = () => {
             })
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
+                if (err.response?.status===403) navigate(AjaxRoutes.ROUTE_LOGIN)
             })
             .finally(() => {
                 setLoadingVehicles(false)
@@ -104,25 +107,31 @@ export const StatisticPage: FC = () => {
     const statisticTitle = loadedVehicleData &&
         `Статистика по: ${getVehicleById(loadedVehicleData.vehicle_id)}, период с ${loadedVehicleData.startRange.format("DD-MM-YYYY")} по ${loadedVehicleData.endRange.format("DD-MM-YYYY")}`
     return <>
-        <Card title={getUserData().company_name}>
+        <Card title={getUserData().company_name} style={{overflow: 'auto'}}>
             <Space direction={'vertical'} size={'large'}>
-                <Space>
-                    <Select
-                        showSearch
-                        placeholder="Выберите Ваше ТС"
-                        style={{width: 200}}
-                        onChange={handleSelectChange}
-                        options={vehicles}
-                        loading={loadingVehicles}
-                        filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
-                        filterSort={(optionA, optionB) =>
-                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                        }
-                    />
-                    <RangePicker onChange={rangePickerChange}/>
-                    <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить
-                        данные</Button>
-                </Space>
+                <Row gutter={[7,4]}>
+                    <Col>
+                        <Select
+                            showSearch
+                            placeholder="Выберите Ваше ТС"
+                            style={{width: 200}}
+                            onChange={handleSelectChange}
+                            options={vehicles}
+                            loading={loadingVehicles}
+                            filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
+                            filterSort={(optionA, optionB) =>
+                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                            }
+                        />
+                    </Col>
+                    <Col>
+                        <RangePicker onChange={rangePickerChange}/>
+                    </Col>
+                    <Col>
+                        <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить
+                            данные</Button>
+                    </Col>
+                </Row>
                 {loadedVehicleData && <Title level={5}>{statisticTitle}</Title>}
                 <Table loading={loadingDoors} columns={columns} dataSource={dataTable} pagination={{position: []}}/>
             </Space>
