@@ -15,7 +15,7 @@ function App() {
     useEffect(() => {
         if (getUserData()) navigate(AjaxRoutes.HOME)
         else navigate(AjaxRoutes.ROUTE_LOGIN)
-    }, []);
+    }, [getUserData,navigate]);
     return (
         <>
             <Routes>

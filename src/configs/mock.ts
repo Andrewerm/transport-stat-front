@@ -1,6 +1,6 @@
 import mock from "./axios"
 import {AjaxRoutes} from "./ajaxRoutes";
-import {IResponseFromServer, ILoginParams, IGetUserData, IVehiclesList, IDoorsList, IDoor} from "../types";
+import {IDoorsList, IGetUserData, ILoginParams, IResponseFromServer, IVehiclesList} from "../types";
 import {loginParams} from "./testLogin";
 
 

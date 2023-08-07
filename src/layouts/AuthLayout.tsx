@@ -1,10 +1,10 @@
 import {Outlet} from "react-router-dom";
-import {Layout, Row, Col} from 'antd';
+import {Col, Layout, Row} from 'antd';
 import React from "react";
 
-const {Content, Sider} = Layout;
+const {Content} = Layout;
 
-export const AuthLayout:React.FC=()=>{
+export const AuthLayout: React.FC = () => {
     const contentStyle: React.CSSProperties = {
         textAlign: 'center',
         // minHeight: 120,
@@ -17,19 +17,19 @@ export const AuthLayout:React.FC=()=>{
         // transform: 'translateY(-50%)',
     };
 
-    const siderStyle: React.CSSProperties = {
-        textAlign: 'center',
-        // lineHeight: '120px',
-        color: '#fff',
-        backgroundColor: '#0960E6',
-    };
+    // const siderStyle: React.CSSProperties = {
+    //     textAlign: 'center',
+    //     // lineHeight: '120px',
+    //     color: '#fff',
+    //     backgroundColor: '#0960E6',
+    // };
     // const layoutStyle: React.CSSProperties = {
     //     // height: '100vh'
     //     minHeight: '100vh'
     //
     // }
     return (
-        <Layout >
+        <Layout>
             <Content style={contentStyle}>
                 <Row justify="center" align="middle" style={{minHeight: '100vh'}}>
                     <Col>
