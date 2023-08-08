@@ -32,9 +32,8 @@ export const StatisticPage: FC = () => {
     const rangePickerChange = (value: RangeValue) => {
         if (value && value[0]) setSelectedStartRange(value[0])
         if (value && value[1]) setSelectedEndRange(value[1])
-
     }
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const [loadingVehicles, setLoadingVehicles] = useState(true);
     const [loadingDoors, setLoadingDoors] = useState(false);
     const {notification} = App.useApp();
@@ -42,6 +41,8 @@ export const StatisticPage: FC = () => {
     const [vehicles, setVehicles] = useState<ISelectorData[]>([]);
     const getVehicleById = (id: number) => vehicles.find(item => item.value === id)?.label
     const formIsNotFilled = () => !selectedVehicleId || !selectedStartRange || !selectedEndRange
+    const [summa, setSumma] = useState(0);
+
     useEffect(() => {
         axios.get<IResponseFromServer<IVehiclesList>>(AjaxRoutes.GET_VEHICLES)
             .then(response => {
@@ -52,7 +53,7 @@ export const StatisticPage: FC = () => {
             })
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
-                if (err.response?.status===403) navigate(AjaxRoutes.ROUTE_LOGIN)
+                if (err.response?.status === 403) navigate(AjaxRoutes.ROUTE_LOGIN)
             })
             .finally(() => {
                 setLoadingVehicles(false)
@@ -75,6 +76,8 @@ export const StatisticPage: FC = () => {
                     if (response.data.data) {
                         setDataTable(response.data.data.doors.map((item: IDoor) => ({key: item.number, ...item})))
                         setLoadedVehicleData(params)
+                        const countComeIn = response.data.data.doors.reduce(((summa: number, item: IDoor) => item.cameIn + summa), 0)
+                        setSumma(countComeIn)
                     }
                 })
                 .catch((err: AxiosError<IResponseFromServer<null>>) => {
@@ -109,7 +112,7 @@ export const StatisticPage: FC = () => {
     return <>
         <Card title={getUserData().company_name} style={{overflow: 'auto'}}>
             <Space direction={'vertical'} size={'large'}>
-                <Row gutter={[7,4]}>
+                <Row gutter={[7, 4]}>
                     <Col>
                         <Select
                             showSearch
@@ -134,6 +137,7 @@ export const StatisticPage: FC = () => {
                 </Row>
                 {loadedVehicleData && <Title level={5}>{statisticTitle}</Title>}
                 <Table loading={loadingDoors} columns={columns} dataSource={dataTable} pagination={{position: []}}/>
+                {statisticTitle && <Title level={5}>Итого перевезено (чел.): {summa}</Title>}
             </Space>
         </Card>
     </>

@@ -27,13 +27,13 @@ const doors: IDoorsList = {
     doors: [
         {
             number: 1,
-            cameIn: 2,
-            cameOut: 3
+            cameIn: 12,
+            cameOut: 13
         },
         {
             number: 2,
-            cameIn: 4,
-            cameOut: 5
+            cameIn: 14,
+            cameOut: 15
         }
     ]
 }
