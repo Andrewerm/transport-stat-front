@@ -1,8 +1,14 @@
 name: My Deploy
 on: push
 jobs:
+  preparing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preparing
+        run: echo preparing ...
   deploying:
     runs-on: ubuntu-latest
+    uses: preparing
     steps:
       - name: Get repository code
         uses: actions/checkout@v3

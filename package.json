@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "axios-mock-adapter": "^1.21.5",
     "gh-pages": "^5.0.0"
   }
