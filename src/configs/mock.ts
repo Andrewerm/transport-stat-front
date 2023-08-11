@@ -13,7 +13,7 @@ const LoginFail: IResponseFromServer<null> = {error: 401, message: 'Аутент
 const LogOut: IResponseFromServer<null> = {error: 200, message: 'Выход из сессии успешен'}
 
 const vehicles: IVehiclesList = {
-    vehicles: [
+    devices: [
         {id: 1, gos_number: 'A111BA116RUS'},
         {id: 3, gos_number: 'A333AA116RUS'},
         {id: 4, gos_number: 'A443MM116RUS'},

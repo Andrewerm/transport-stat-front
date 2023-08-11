@@ -7,7 +7,7 @@ export interface IVehicle {
 }
 
 export interface IVehiclesList {
-    vehicles: Array<IVehicle>
+    devices: Array<IVehicle>
 }
 
 export interface IDoor {

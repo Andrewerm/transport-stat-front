@@ -46,7 +46,7 @@ export const StatisticPage: FC = () => {
     useEffect(() => {
         axios.get<IResponseFromServer<IVehiclesList>>(AjaxRoutes.GET_VEHICLES)
             .then(response => {
-                if (response.data.data) setVehicles(response.data.data.vehicles.map((item: IVehicle) => ({
+                if (response.data.data) setVehicles(response.data.data.devices.map((item: IVehicle) => ({
                     value: item.id,
                     label: item.gos_number
                 })))

@@ -14,8 +14,8 @@ export const LoginPage: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<InputRef>(null);
     const [form] = Form.useForm();
-    // if (process.env.NODE_ENV === 'development')
-    form.setFieldsValue(loginParams);
+    if (process.env.NODE_ENV === 'development')
+        form.setFieldsValue(loginParams);
     const navigate = useNavigate()
     const {notification} = App.useApp();
     const {setDataUser} = useContext(ProfileDataContext);

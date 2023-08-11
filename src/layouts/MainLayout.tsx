@@ -19,14 +19,14 @@ export const MainLayout: FC = () => {
         axios.post<IResponseFromServer<null>>(AjaxRoutes.LOGOUT, {}, {withCredentials: true})
             .then((response) => {
                 notification.success({message: response.data.message})
-                clearDataUser()
-                navigate(AjaxRoutes.ROUTE_LOGIN, {replace: true})
             })
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
             })
             .finally(() => {
+                clearDataUser()
                 setLoading(false)
+                navigate(AjaxRoutes.ROUTE_LOGIN, {replace: true})
             })
     }
 

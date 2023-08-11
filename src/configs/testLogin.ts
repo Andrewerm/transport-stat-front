@@ -1,3 +1,3 @@
 import {ILoginParams} from "../types";
 
-export const loginParams: ILoginParams = {email: 'a.m.vinokurov@gmail.com', password: '123456789'}
+export const loginParams: ILoginParams = {email: 'worker@pascount.ru', password: 'Just@M0ment'}
