@@ -38,7 +38,9 @@ const doors: IDoorsList = {
     ]
 }
 
-mock.onPost(AjaxRoutes.LOGIN)
+mock.onAny()
+    .passThrough()
+    .onPost(AjaxRoutes.LOGIN)
     .reply<IResponseFromServer<null>>(function (config) {
         const data: ILoginParams = JSON.parse(config.data)
         if (data.email === loginParams.email && data.password === loginParams.password) return [200, LoginSuccessful]

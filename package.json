@@ -33,7 +33,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://andrewerm.github.io/transport-stat-front/",
+  "homepage": "https://count.stellar-tb.ru",
   "browserslist": {
     "production": [
       ">0.2%",
