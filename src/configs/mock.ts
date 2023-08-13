@@ -39,8 +39,8 @@ const doors: IDoorsList = {
 }
 
 mock
-    // .onAny()
-    // .passThrough()
+    .onAny()
+    .passThrough()
     .onPost(AjaxRoutes.LOGIN)
     .reply<IResponseFromServer<null>>(function (config) {
         const data: ILoginParams = JSON.parse(config.data)

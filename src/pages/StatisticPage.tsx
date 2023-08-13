@@ -21,6 +21,7 @@ const {Title} = Typography
 type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
 export const StatisticPage: FC = () => {
+    const dateFormat = 'DD.MM.YYYY';
     const [selectedVehicleId, setSelectedVehicleId] = useState<number>();
     const [selectedStartRange, setSelectedStartRange] = useState<Dayjs>(dayjs().subtract(1, 'day'));
     const [selectedEndRange, setSelectedEndRange] = useState<Dayjs>(dayjs().subtract(1, 'day'));
@@ -134,7 +135,10 @@ export const StatisticPage: FC = () => {
                     <Col>
                         <RangePicker
                             defaultValue={[dayjs().subtract(1, 'day'), dayjs()]}
-                            onChange={rangePickerChange}/>
+                            onChange={rangePickerChange}
+                            format={dateFormat}
+
+                        />
                     </Col>
                     <Col>
                         <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить
