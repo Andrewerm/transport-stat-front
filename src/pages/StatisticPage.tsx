@@ -141,7 +141,8 @@ export const StatisticPage: FC = () => {
                         />
                     </Col>
                     <Col>
-                        <Button disabled={formIsNotFilled()} onClick={getDoors} loading={loadingDoors} type={'primary'}>Получить
+                        <Button disabled={formIsNotFilled() || loadingDoors} onClick={getDoors}
+                                type={'primary'}>Получить
                             данные</Button>
                     </Col>
                 </Row>
