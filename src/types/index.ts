@@ -7,7 +7,7 @@ export interface IVehicle {
 }
 
 export interface IVehiclesList {
-    devices: Array<IVehicle>
+    vehicles: Array<IVehicle>
 }
 
 export interface IDoor {
@@ -32,8 +32,8 @@ export interface IGetUserData {
 
 export interface IGetDoorsParams {
     vehicle_id: number,
-    startRange: Dayjs,
-    endRange: Dayjs
+    start_ts: Dayjs,
+    end_ts: Dayjs
 }
 
 export interface ISelectorData extends DefaultOptionType{

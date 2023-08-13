@@ -13,7 +13,7 @@ const LoginFail: IResponseFromServer<null> = {error: 401, message: 'Аутент
 const LogOut: IResponseFromServer<null> = {error: 200, message: 'Выход из сессии успешен'}
 
 const vehicles: IVehiclesList = {
-    devices: [
+    vehicles: [
         {id: 1, gos_number: 'A111BA116RUS'},
         {id: 3, gos_number: 'A333AA116RUS'},
         {id: 4, gos_number: 'A443MM116RUS'},
@@ -38,8 +38,9 @@ const doors: IDoorsList = {
     ]
 }
 
-mock.onAny()
-    .passThrough()
+mock
+    // .onAny()
+    // .passThrough()
     .onPost(AjaxRoutes.LOGIN)
     .reply<IResponseFromServer<null>>(function (config) {
         const data: ILoginParams = JSON.parse(config.data)
@@ -50,7 +51,7 @@ mock.onAny()
     .reply<IResponseFromServer<null>>(() => [LogOut.error, LogOut])
     .onGet(AjaxRoutes.GET_VEHICLES)
     .reply<IResponseFromServer<IVehiclesList>>(() => [200, {data: vehicles}])
-    .onGet(AjaxRoutes.GET_DOORS)
+    .onPost(AjaxRoutes.POST_REPORT)
     .reply<IResponseFromServer<IDoorsList>>(() => [200, {data: doors}])
     .onAny()
     .reply(() => [404, NotFoundPage])

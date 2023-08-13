@@ -17,9 +17,6 @@ export const MainLayout: FC = () => {
     const logout = () => {
         setLoading(true)
         axios.post<IResponseFromServer<null>>(AjaxRoutes.LOGOUT, {}, {withCredentials: true})
-            .then((response) => {
-                notification.success({message: response.data.message})
-            })
             .catch((err: AxiosError<IResponseFromServer<null>>) => {
                 notification.error({message: err.response?.data.message || err.message})
             })
