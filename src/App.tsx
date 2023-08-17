@@ -19,7 +19,7 @@ function App() {
     return (
         <>
             <Routes>
-                <Route path="/" element={<AppLayout/>}>
+                <Route path="/transport-stat-front/" element={<AppLayout/>}>
                     {getUserData() && <Route path="" element={<MainLayout/>}>
                         <Route index element={<StatisticPage/>}/>
                     </Route>}
