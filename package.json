@@ -2,6 +2,7 @@
   "name": "transport-stat",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/transport-stat-front",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -33,7 +34,6 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://count.stellar-tb.ru",
   "browserslist": {
     "production": [
       ">0.2%",
