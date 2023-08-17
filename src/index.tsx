@@ -22,7 +22,7 @@ root.render(
     <ProfileData>
         <ConfigProvider theme={antCustoms} locale={ruRU}>
             <AppAnt>
-                <BrowserRouter>
+                <BrowserRouter basename="/transport-stat-front">
                     <App/>
                 </BrowserRouter>
             </AppAnt>
