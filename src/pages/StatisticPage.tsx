@@ -65,7 +65,7 @@ export const StatisticPage: FC = () => {
             .finally(() => {
                 setLoadingVehicles(false)
             })
-    }, [navigate, notification]);
+    }, [navigate, notification, clearDataUser]);
     const getDoors = () => {
         if (selectedVehicleId && selectedStartRange && selectedEndRange) {
             setLoadingDoors(true)
